@@ -9,7 +9,7 @@ import mumage.mumagebackend.exception.NoResultException;
 import mumage.mumagebackend.service.FollowService;
 import mumage.mumagebackend.service.LikesService;
 import mumage.mumagebackend.service.PostsService;
-import mumage.mumagebackend.service.Userervice;
+import mumage.mumagebackend.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class LikesController {
 
-    private final Userervice Userervice;
+    private final UserService UserService;
     private final PostsService postsService;
     private final LikesService likesService;
     private final FollowService followService;
@@ -31,7 +31,7 @@ public class LikesController {
     @GetMapping("/likes/read/{postId}&{userId}")
     public String saveLikesGet(@PathVariable("postId") Long postId,
                                @PathVariable("userId") Long userId) throws NoResultException {
-        User user = Userervice.findById(userId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
+        User user = UserService.findById(userId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
         Posts posts = postsService.findById(postId).orElseThrow(() -> new NoResultException("잘못된 Post 정보 입니다."));
         Likes likes = Likes.builder() // 유저와 게시글 id에 맞게 like 객체 생성
                 .posts(posts)
@@ -47,7 +47,7 @@ public class LikesController {
     @GetMapping("/likes/delete/{postId}&{userId}")
     public String deleteLikesGet(@PathVariable("postId") Long postId,
                                  @PathVariable("userId") Long userId) throws NoResultException {
-        User user = Userervice.findById(userId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
+        User user = UserService.findById(userId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
         Posts posts = postsService.findById(postId).orElseThrow(() -> new NoResultException("잘못된 Post 정보 입니다."));
         Likes likes = likesService.findByPostsAndUser(posts, user).orElseGet(Likes::new); // 게시글에 user가 누른 좋아요 객체 가져오기
 
@@ -62,12 +62,12 @@ public class LikesController {
                                   @PathVariable("userId") Long userId,
                                   Model model) throws NoResultException {
         Posts posts = postsService.findById(postId).orElseGet(Posts::new);
-        User loginUser = Userervice.findById(userId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
+        User loginUser = UserService.findById(userId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
         Set<Long> likeUserIdList = likesService.findLikeUserIdList(posts); // 게시글에 좋아요 누른 user id 목록 가져오기
 
         Set<FollowListDto> userDto = new HashSet<>();
         for (Long likeUserId : likeUserIdList) {
-            User user = Userervice.findById(likeUserId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다.")); // 좋아요 누른 user id로 user 가져오기
+            User user = UserService.findById(likeUserId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다.")); // 좋아요 누른 user id로 user 가져오기
             userDto.add(followService.convertDto(loginUser, user)); // 좋아요 누른 user 정보들 dto로 전환, 팔로우 여부까지 표시
         }
 

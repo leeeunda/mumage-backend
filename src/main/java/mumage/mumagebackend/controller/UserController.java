@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import mumage.mumagebackend.dto.MessageDto;
 import mumage.mumagebackend.domain.User;
 import mumage.mumagebackend.dto.UserJoinDto;
-import mumage.mumagebackend.service.Userervice;
+import mumage.mumagebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,17 +17,17 @@ import java.nio.charset.Charset;
 @RestController
 public class UserController {
 
-    private final Userervice Userervice;
+    private final UserService UserService;
 
     @Autowired
-    public UserController(Userervice Userervice) {
-        this.Userervice = Userervice;
+    public UserController(UserService Userervice) {
+        this.UserService = Userervice;
     }
 
     @PostMapping(value = "/signup")
     public ResponseEntity<MessageDto> joinMember(@Valid @RequestBody UserJoinDto userJoinDto) {
 
-        User user = Userervice.join(userJoinDto);
+        User user = UserService.join(userJoinDto);
         MessageDto messageDto = new MessageDto();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -46,7 +46,7 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        if (Userervice.existLoginId(loginId)) {
+        if (UserService.existLoginId(loginId)) {
             boolean existLoginId = false;
 
             messageDto.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -72,7 +72,7 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        if (Userervice.existNickname(nickname)) {
+        if (UserService.existNickname(nickname)) {
             boolean existLoginId = false;
 
             messageDto.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -97,7 +97,7 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        if (Userervice.withdraw(userId)) {
+        if (UserService.withdraw(userId)) {
             messageDto.setStatus(HttpStatus.OK.value());
             messageDto.setMessage("회원 탈퇴 성공");
             return new ResponseEntity<>(messageDto,headers,HttpStatus.OK);

@@ -22,14 +22,14 @@ public class CommentsService {
 
     private final CommentsRepository commentsRepository;
     private final PostsService postsService;
-    private final Userervice Userervice;
+    private final UserService Userervice;
 
     //유저, 게시글 정보 가져와서 댓글 생성 -> db에 저장
     @Transactional
     public void save(Long postId, Long userId, CommentDto commentDto) {
 
         Posts posts = postsService.findById(postId).orElseGet(Posts::new);
-        User user = Userervice.findById(userId).orElseGet(User::new);
+        User user = UserService.findById(userId).orElseGet(User::new);
 
         Comments comments = Comments.builder()
                 .content(commentDto.getComment())

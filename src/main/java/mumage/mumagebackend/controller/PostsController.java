@@ -9,7 +9,8 @@ import mumage.mumagebackend.dto.PostDto;
 import mumage.mumagebackend.exception.NoResultException;
 import mumage.mumagebackend.service.CommentsService;
 import mumage.mumagebackend.service.PostsService;
-import mumage.mumagebackend.service.Userervice;
+import mumage.mumagebackend.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PostsController {
 
-    private final Userervice Userervice;
+    private final UserService UserService;
     private final PostsService postsService;
     private final CommentsService commentsService;
 
@@ -155,25 +156,25 @@ public class PostsController {
         return "post/delete";
     }
 
-    //추천 탭 (격자 형태), 사용자가 UI 선택 => 장르에 따른 게시물 표시 (장르별&페이징)
-    /* /{category_name}/page={pageNo}&orderby={orderCriteria} */
-    @GetMapping("/post/recommend/{genre_name}")
-    public String RecommendListGet(@PathVariable String genre_name,
-                                   @PathVariable("userId") Long userId,
-                                   @RequestParam(value="orderby",defaultValue = "id") String orderCriteria, //정렬 기준.  뷰에서 정렬 순서 파라미터를 보내주지 않아도 기본적으로 id(최신순) 으로 정렬
-                                   @RequestParam(value="page", defaultValue="0") int pageNo, //페이지 번호
-                                   Pageable pageable,
-                                   Model model){
-        //페이징 처리
-        Page<PostDto.ResponsePageDto> postPageList =
-                postsService.getPageList(pageable, pageNo, genre_name, orderCriteria); // 페이지 객체 생성
-
-        List<PostDto> postDtoList = likesService.getFollowListPage(userId, page, 5); //유저가 팔로우 한 사람의 게시글 페이지에 맞게 5개 가져오기
-        model.addAttribute("postDtoList", postDtoList);
-
-        PageDto pageDto = new PageDto(page, 5, Math.toIntExact(postsService.getFollowPostCount(userId)), 5); //페이지네이션
-        model.addAttribute("pageDto", pageDto);
-    }
+//    //추천 탭 (격자 형태), 사용자가 UI 선택 => 장르에 따른 게시물 표시 (장르별&페이징)
+//    /* /{category_name}/page={pageNo}&orderby={orderCriteria} */
+//    @GetMapping("/post/recommend/{genre_name}")
+//    public String RecommendListGet(@PathVariable String genre_name,
+//                                   @PathVariable("userId") Long userId,
+//                                   @RequestParam(value="orderby",defaultValue = "id") String orderCriteria, //정렬 기준.  뷰에서 정렬 순서 파라미터를 보내주지 않아도 기본적으로 id(최신순) 으로 정렬
+//                                   @RequestParam(value="page", defaultValue="0") int pageNo, //페이지 번호
+//                                   Pageable pageable,
+//                                   Model model){
+//        //페이징 처리
+//        Page<PostDto.ResponsePageDto> postPageList =
+//                postsService.getPageList(pageable, pageNo, genre_name, orderCriteria); // 페이지 객체 생성
+//
+//        List<PostDto> postDtoList = likesService.getFollowListPage(userId, page, 5); //유저가 팔로우 한 사람의 게시글 페이지에 맞게 5개 가져오기
+//        model.addAttribute("postDtoList", postDtoList);
+//
+//        PageDto pageDto = new PageDto(page, 5, Math.toIntExact(postsService.getFollowPostCount(userId)), 5); //페이지네이션
+//        model.addAttribute("pageDto", pageDto);
+//    }
 
 
     // 권한 없이 접근 했을시

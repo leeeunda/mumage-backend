@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import mumage.mumagebackend.domain.User;
 import mumage.mumagebackend.dto.FollowListDto;
 import mumage.mumagebackend.service.FollowService;
-import mumage.mumagebackend.service.Userervice;
+import mumage.mumagebackend.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,15 +21,15 @@ import java.util.Set;
 public class FollowController {
 
     private final FollowService followService;
-    private final Userervice Userervice;
+    private final UserService UserService;
 
     // 팔로우
     @GetMapping("/follow/{userId}&{loginUserId}")
     public String followGet(@PathVariable("userId") Long userId,
                             @PathVariable("loginUserId") Long loginUserId,
                             HttpServletRequest request) throws NoResultException {
-        User from = Userervice.findById(loginUserId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
-        User to = Userervice.findById(userId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
+        User from = UserService.findById(loginUserId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
+        User to = UserService.findById(userId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
         followService.save(from,to); //로그인 유저가 선택한 유저를 팔로우
 
         // 이전 페이지로 복귀
@@ -44,8 +44,8 @@ public class FollowController {
                               @PathVariable("loginUserId") Long loginUserId,
                               HttpServletRequest request) throws NoResultException {
 
-        User from = Userervice.findById(loginUserId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
-        User to = Userervice.findById(userId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
+        User from = UserService.findById(loginUserId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
+        User to = UserService.findById(userId).orElseThrow(() -> new NoResultException("잘못된 User 정보 입니다."));
 
         followService.delete(from,to); //로그인 유저가 선택한 유저를 언팔로우
 

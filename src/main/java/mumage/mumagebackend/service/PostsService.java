@@ -28,7 +28,7 @@ public class PostsService {
     private final PostsRepository postsRepository;
     private final LikesService likesService;
     private final FollowService followService;
-    private final Userervice Userervice;
+    private final UserService UserService;
 
     @Transactional
     public void save(Posts posts){
@@ -121,7 +121,7 @@ public class PostsService {
 
     // Posts 객체 생성해서 반환
     public Posts makePost(@Valid PostDto postDto, Long userId, String picture){
-        User user = Userervice.findById(userId).orElseGet(User::new);
+        User user = UserService.findById(userId).orElseGet(User::new);
         return Posts.builder() // 게시글 생성
                 .content(postDto.getContent())
                 .imageUrl(picture)

@@ -15,7 +15,7 @@ public class HomeConfig implements WebMvcConfigurer {
 
     private final CommentsService commentsService;
     private final PostsService postsService;
-    private final Userervice Userervice;
+    private final UserService UserService;
     private final FollowService followService;
     private final LikesService likesService;
 
