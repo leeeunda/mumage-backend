@@ -20,8 +20,8 @@ public class UserController {
     private final UserService UserService;
 
     @Autowired
-    public UserController(UserService Userervice) {
-        this.UserService = Userervice;
+    public UserController(UserService Userservice) {
+        this.UserService = Userservice;
     }
 
     @PostMapping(value = "/signup")

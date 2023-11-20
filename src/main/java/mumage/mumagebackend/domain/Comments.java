@@ -6,13 +6,10 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*; //javax->jarkarta
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 @Entity
 @Getter
 @NoArgsConstructor
-public class Comments {
+public class Comments extends BaseTimeEntity{
 
     @Id
     @GeneratedValue

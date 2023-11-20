@@ -22,7 +22,7 @@ public class CommentsService {
 
     private final CommentsRepository commentsRepository;
     private final PostsService postsService;
-    private final UserService Userervice;
+    private final UserService UserService;
 
     //유저, 게시글 정보 가져와서 댓글 생성 -> db에 저장
     @Transactional

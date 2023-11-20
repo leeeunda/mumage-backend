@@ -93,9 +93,4 @@ public class FollowController {
         return "follow/followingList";
     }
 
-//    // 이미 팔로잉 중인 사용자 팔로우 시 보여주는 페이지 맵핑
-//    @GetMapping("/follow/already")
-//    public String alreadyGet(){
-//        return "follow/already";
-//    }
 }

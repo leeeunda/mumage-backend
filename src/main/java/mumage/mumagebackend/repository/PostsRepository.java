@@ -38,6 +38,6 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
     Long getPostsCntByUser(User user); // user가 작성한 게시글 목록 반환
 
 
-//    @Query(value = "SELECT count(p) FROM Posts p WHERE p.User = ?1 and p.createdDate >= ?2 and p.createdDate <= ?3")
-//    Long getPostsCntByUserToday(User user, LocalDateTime todayDate, LocalDateTime tomorrowDate); // user가 오늘 작성한 글의 수 반환
+    @Query(value = "SELECT count(p) FROM Posts p WHERE p.User = ?1 and p.createdDate >= ?2 and p.createdDate <= ?3")
+    Long getPostsCntByUserToday(User user, LocalDateTime todayDate, LocalDateTime tomorrowDate); // user가 오늘 작성한 글의 수 반환
 }

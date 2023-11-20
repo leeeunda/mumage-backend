@@ -57,12 +57,12 @@ public class FollowService {
 
     // 팔로워 수 반환
     public Long countFollower(User user){
-        return followRepository.countFollower(user.getId());
+        return followRepository.countFollower(user.getUserId());
     }
 
     // 팔로잉 수 반환
     public Long countFollowing(User user){
-        return followRepository.countFollowing(user.getId());
+        return followRepository.countFollowing(user.getUserId());
     }
 
     // from 유저가 to 유저를 팔로잉 중인지 반환

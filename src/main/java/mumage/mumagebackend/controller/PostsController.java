@@ -35,7 +35,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PostsController {
 
-    private final UserService UserService;
+    private final UserService userService;
     private final PostsService postsService;
     private final CommentsService commentsService;
 
@@ -118,19 +118,19 @@ public class PostsController {
         return "redirect:/post/read/{postId}";
     }
 
-//    // 좋아요 누른 목록 보여주는 controller
-//    @GetMapping("/post/likeList/{userId}")
-//    public String likeListGet(@RequestParam(value = "page", defaultValue = "1") int page,
-//                              @PathVariable("userId") Long userId, Model model) throws NoResultException {
-//        List<PostDto> postDtoList = postsService.getUserLikeListPage(userId, page, 5); // 유저가 좋아요 한 게시글 postDto로 전환 후 가져오기
-//        model.addAttribute("postDtoList", postDtoList);
-//
-//        User user = Userervice.findById(userId).orElseThrow(() -> new NoResultException("잘못된 Post 정보 입니다.")); // 유저가 누른 좋아요 size 구하기 위해 user 가져옴
-//        PageDto pageDto = new PageDto(page, 5, user.getLikesList().size(), 5); // 페이지네이션
-//        model.addAttribute("pageDto", pageDto);
-//
-//        return "post/likeList";
-//    }
+    // 좋아요 누른 목록 보여주는 controller
+    @GetMapping("/post/likeList/{userId}")
+    public String likeListGet(@RequestParam(value = "page", defaultValue = "1") int page,
+                              @PathVariable("userId") Long userId, Model model) throws NoResultException {
+        List<PostDto> postDtoList = postsService.getUserLikeListPage(userId, page, 5); // 유저가 좋아요 한 게시글 postDto로 전환 후 가져오기
+        model.addAttribute("postDtoList", postDtoList);
+
+        User user = userService.findById(userId).orElseThrow(() -> new NoResultException("잘못된 Post 정보 입니다.")); // 유저가 누른 좋아요 size 구하기 위해 user 가져옴
+        PageDto pageDto = new PageDto(page, 5, user.getLikesList().size(), 5); // 페이지네이션
+        model.addAttribute("pageDto", pageDto);
+
+        return "post/likeList";
+    }
 
     // 피드(팔로잉) 팔로우 한 사람의 게시글 목록 가져오기
     @GetMapping("/post/followList/{userId}")
@@ -168,12 +168,7 @@ public class PostsController {
 //        //페이징 처리
 //        Page<PostDto.ResponsePageDto> postPageList =
 //                postsService.getPageList(pageable, pageNo, genre_name, orderCriteria); // 페이지 객체 생성
-//
-//        List<PostDto> postDtoList = likesService.getFollowListPage(userId, page, 5); //유저가 팔로우 한 사람의 게시글 페이지에 맞게 5개 가져오기
-//        model.addAttribute("postDtoList", postDtoList);
-//
-//        PageDto pageDto = new PageDto(page, 5, Math.toIntExact(postsService.getFollowPostCount(userId)), 5); //페이지네이션
-//        model.addAttribute("pageDto", pageDto);
+
 //    }
 
 
@@ -183,14 +178,16 @@ public class PostsController {
         return "post/noAuthority";
     } // 작성자가 아닐시 수정 & 삭제 불가능
 
-    //파일 업로드
+    //파일 서버에 업로드
     public String addFile(MultipartFile files) throws IOException {
         if (files.isEmpty()) return null;
         //범용 고유 식별자 UUID 객체 생성
         UUID uuid = UUID.randomUUID();
         //UUID가 적용된 이름 지정 -> return
         String newName = uuid + "_" + files.getOriginalFilename();
+        //파일 저장할 기본 디렉토리
         String baseDir = "C:\\git\\Songstagram\\uploads\\post\\";
+        //지정된 경로에 파일을 저장
         files.transferTo(new File(baseDir + newName));
         return newName;
     }

@@ -44,7 +44,6 @@ public class LikesService {
 
     // 게시글에 좋아요 누른 user id 목록 반환
     public Set<Long> findLikeUserIdList(Posts posts){
-//        Set<Likes> byPosts = likesRepository.findByPosts(posts); //쿼리를 통해 좋아요 목록을 가져온다.
         Set<Likes> byPosts = posts.getLikesList(); // posts에 fetch join을 통해 미리 가져온 좋아요 목록을 활용한다.
         Set<Long> likesUserIdList = new HashSet<>();
         for (Likes likes : byPosts) {
@@ -52,4 +51,5 @@ public class LikesService {
         }
         return likesUserIdList;
     }
+
 }

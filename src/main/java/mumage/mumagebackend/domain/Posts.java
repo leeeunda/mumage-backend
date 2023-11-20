@@ -35,7 +35,7 @@ public class Posts extends BaseTimeEntity{
     @OneToMany(mappedBy = "posts", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Likes> likesList; // 게시글에 누른 좋아요 목록
 
-    //곡정보 테이블 매핑 -> 아티스트, 곡제목(?), 앨범, 노래Url
+    //곡정보 테이블 매핑 -> 아티스트, 곡제목, 트랙 Url
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="song_id") //FK
     private Song song; //Song 클래스를 참조

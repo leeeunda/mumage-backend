@@ -1,12 +1,12 @@
 package mumage.mumagebackend.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,15 +21,16 @@ public class Song {
 
     @Column(nullable = false)
     public String songName; //노래이름
-    public String songUrl; //노래 재생 Url
+    public String trackUrl; //노래 재생 Url
     public String singer; //가수명
-    public String lyrics; //가사
     public String albumName; //앨범 이름
 
+    @OneToMany(mappedBy="song")
+    private List<Posts> posts = new ArrayList<>();
 
     @Builder
-    public Song(String songName, String singer, String songUrl, String albumName){
-        this.songUrl=songUrl;
+    public Song(String songName, String singer, String trackUrl, String albumName){
+        this.trackUrl=trackUrl;
         this.songName=songName;
         this.albumName=albumName;
         this.singer=singer;
